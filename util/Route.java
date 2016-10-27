@@ -1,15 +1,20 @@
 package util;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import math.Vector;
 
 public class Route {
 	public List<Vector> route;
+	public Color color;
+	public String name;
 	
-	public Route() {
-		route = new CopyOnWriteArrayList<Vector>();
+	public Route(Color color, String name) {
+		this.route = new ArrayList<Vector>();
+		this.color = color;
+		this.name = name;
 	}
 	
 	public void add(Vector u) {
@@ -24,5 +29,10 @@ public class Route {
 			route.remove(u);
 		else
 			System.err.println("Removing non-routed vector from route.");
+	}
+	
+	public void generate(List<Vector> nails) {
+		for(Vector nail : nails)
+			route.add(nail);
 	}
 }

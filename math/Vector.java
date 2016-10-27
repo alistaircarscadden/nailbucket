@@ -1,9 +1,11 @@
 package math;
 
+import static java.lang.Math.*;
+
 public class Vector {
-	public float x, y;
+	public double x, y;
 	
-	public Vector(float x, float y) {
+	public Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -20,5 +22,9 @@ public class Vector {
 	public void subtract(Vector v) {
 		this.x -= v.x;
 		this.y -= v.y;
+	}
+	
+	public double distance(Vector v) {
+		return sqrt( pow(x - v.x, 2) + pow(y - v.y, 2) );
 	}
 }
