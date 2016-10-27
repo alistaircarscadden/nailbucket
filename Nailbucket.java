@@ -39,7 +39,7 @@ public class Nailbucket extends JPanel {
 			float y = (float) random() * height;
 			
 			if(sqrt(pow(x, 2) + pow(y, 2)) < radius) {
-				nails.add(new Vector(x, y));
+				nails.add(new Vector(x + radius, y + radius));
 			}
 		}
 	}
@@ -52,5 +52,10 @@ public class Nailbucket extends JPanel {
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillOval(0, 0, radius * 2, radius * 2);
+		
+		g.setColor(Color.RED);
+		for(Vector u : nails) {
+			g.drawLine((int) u.x - 3, (int) u.y - 3, (int) u.x + 3, (int) u.y + 3);
+		}
 	}
 }
