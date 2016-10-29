@@ -3,6 +3,7 @@ package math;
 import static java.lang.Math.*;
 
 public class Vector {
+	
 	public double x, y;
 	
 	public Vector(double x, double y) {
@@ -27,4 +28,5 @@ public class Vector {
 	public double distance(Vector v) {
 		return sqrt( pow(x - v.x, 2) + pow(y - v.y, 2) );
 	}
+	
 }

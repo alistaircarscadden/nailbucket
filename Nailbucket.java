@@ -10,79 +10,79 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.Vector;
-import util.Route;
+import pathing.Route;
+import pathing.RouteGenerator;
+import pathing.routegen.ClosestRouteGenerator;
+import pathing.routegen.RandomRouteGenerator;
 
 @SuppressWarnings("serial")
 public class Nailbucket extends JPanel {
-	public int width, height, radius, numNails;
+	
+	public int width, height, radius;
 	public List<Vector> nails;
 	public List<Route> routes;
+	public Vector start;
 
 	public Nailbucket() {
 		radius = 200;
 		width = height = radius * 2;
-		numNails = 30;
 		nails = new ArrayList<Vector>();
 		routes = new ArrayList<Route>();
+		start = new Vector(width/2, height/2);
 		
 		JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.setSize(width + 20, height + 40);
 		setSize(width, height);
 		frame.add(this);
 		frame.setVisible(true);
 		
-		createNails(numNails);
+		nails = getNewNails(10, radius, start);
 		
-		/*
-		 * CREATION OF ROUTE ALGORITHMS
-		 */
-		Route random = new Route(Color.WHITE, "Random") {
-			public void generate(List<Vector> nails) {
-				for(Vector nail : nails)
-					route.add(nail);
-			}
-		};
+		RouteGenerator rg;
 		
-		Route closest = new Route(Color.YELLOW, "Closest") {
-			public void generate(List<Vector> nails) {
-				List<Vector> tempNails = new ArrayList<Vector>();
-				for(Vector u : nails)
-					tempNails.add(u);
-				Vector pos = new Vector(radius, radius);
-				
-				while(tempNails.size() > 0) {
-					Vector closest = tempNails.get(0);
-					for (Vector u : tempNails) {
-						if (pos.distance(u) < pos.distance(closest))
-							closest = u;
-					}
-					tempNails.remove(closest);
-					pos = closest;
-					route.add(closest);
-				}
-			}
-		};
+		rg = new RandomRouteGenerator();
+		Route random = new Route("Random", Color.WHITE, start);
+		rg.generate(random, getNailsCopy());
+		routes.add(random);
 		
-		random.generate(nails);
-		closest.generate(nails);
-		
-		//routes.add(random);
+		rg = new ClosestRouteGenerator();
+		Route closest = new Route("Closest", Color.YELLOW, start);
+		rg.generate(closest, getNailsCopy());
 		routes.add(closest);
+		
+		for(Route r : routes) {
+			System.out.printf("%s: %d\n", r.name, (int) r.distance());
+		}
 		
 		repaint();
 	}
 	
-	public void createNails(int numPts) {
-		while(nails.size() < numNails) {
-			Vector newNail = new Vector(random() * radius * 2,
-										random() * radius * 2);
+	public List<Vector> getNewNails(int numPts, double radius, Vector center) {
+		List<Vector> newNails = new ArrayList<Vector>();
+		
+		while(newNails.size() < numPts) {
+			Vector newNail = new Vector(random() * radius * 2 + center.x - radius,
+										random() * radius * 2 + center.y - radius);
 			
-			if(newNail.distance(new Vector(radius, radius)) < radius) {
-				nails.add(newNail);
+			if(newNail.distance(new Vector(center.x, center.y)) < radius) {
+				System.out.printf("New nail at: (%d, %d)\n", (int) newNail.x, (int) newNail.y);
+				newNails.add(newNail);
 			}
 		}
+		
+		return newNails;
+	}
+	
+	public List<Vector> getNailsCopy() {
+		List<Vector> nailsCopy = new ArrayList<Vector>();
+		
+		for(Vector u : nails)
+			nailsCopy.add(u);
+		
+		return nailsCopy;
 	}
 
 	public static void main(String[] args) {
@@ -110,7 +110,8 @@ public class Nailbucket extends JPanel {
 		}
 		
 		g.setColor(Color.BLUE);
-		g.drawLine((int) radius - 3, (int) radius - 3, (int) radius + 3, (int) radius + 3);
-		g.drawLine((int) radius - 3, (int) radius + 3, (int) radius + 3, (int) radius - 3);
+		g.drawLine((int) start.x - 3, (int) start.y - 3, (int) start.x + 3, (int) start.y + 3);
+		g.drawLine((int) start.x - 3, (int) start.y + 3, (int) start.x + 3, (int) start.y - 3);
 	}
+	
 }
