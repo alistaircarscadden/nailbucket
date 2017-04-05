@@ -10,7 +10,7 @@ First clone the project using `git clone https://github.com/tejedu/nailbucket.gi
 
 The project comes with two route generators ready to go, Closest and Random. To build the project and see these in action, run `javac Nailbucket.java` and then `java Nailbucket`. You should get a window that looks something like this:
 
-![](http://imgur.com/QrSw3bl)
+![Example Image](http://imgur.com/QrSw3bl)
 
 #### Making Your Own Algorithm
 
