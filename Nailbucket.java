@@ -12,8 +12,7 @@ import javax.swing.JPanel;
 import math.Vector;
 import pathing.Route;
 import pathing.RouteGenerator;
-import pathing.routegen.ClosestRouteGenerator;
-import pathing.routegen.RandomRouteGenerator;
+import pathing.routegen.*;
 
 @SuppressWarnings("serial")
 public class Nailbucket extends JPanel {
@@ -52,7 +51,29 @@ public class Nailbucket extends JPanel {
 		Route closest = new Route("Closest", Color.YELLOW, start);
 		rg.generate(closest, getNailsCopy());
 		routes.add(closest);
-		
+        
+        /* Insert your routes below here */
+        
+        /* Insert your routes above here */
+        
+        /*
+        Instructions to add your own route generator:
+        
+        1: Copy the following code between asterisks outisde of comment and into the area specified above
+        
+        ***************************************************************
+		rg = new MyRouteGenerator();
+		Route myRoute = new Route("MyAlgorithm", Color.YELLOW, start);
+		rg.generate(myRoute, getNailsCopy());
+		routes.add(myRoute);
+        ***************************************************************
+        
+        2: Replace MyRouteGenerator() on first line with the name of your route generator
+        3: Replace myRoute on the second line, third line, and fourth line with a unique identifier for your generator's route
+        4: Replace "MyAlgorithm" with the name of your algorithm (between quotes!)
+        5: Replace Color.YELLOW with the colour you'd like to have your route drawn
+        */
+        
 		for(Route r : routes) {
 			System.out.printf("%s: %d\n", r.name, (int) r.distance());
 		}
